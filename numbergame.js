@@ -3,14 +3,14 @@ function draw(){
   if (canvas.getContext){
     var ctx = canvas.getContext('2d');
   }
-  for (var i = 0; i < 3; i++) {
+  for (var i = 0; i < 4; i++) {
     ctx.beginPath();
-    ctx.moveTo(125 + i * 125, 5);
-    ctx.lineTo(125 + i * 125, 495);
+    ctx.moveTo(125 + i * 125, 0);
+    ctx.lineTo(125 + i * 125, 500);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(5, 125 + i * 125);
-    ctx.lineTo(495, 125 + i * 125);
+    ctx.moveTo(0, 125 + i * 125);
+    ctx.lineTo(500, 125 + i * 125);
     ctx.stroke();
   }
 }
