@@ -1,20 +1,17 @@
 function init(){
     var s = new CanvasState(document.getElementById('gameArea'));
-    s.addShape(new Shape(60,60,120,120, 1));
-    s.addShape(new Shape(200,200,120,120, 1));
+    s.addShape(20,520,1)
+    s.addShape(150,520,1)
+    s.addShape(280,520,1)
 }
 
 
-function Shape(x, y, w, h, num, fill) {
-
-
-
+function Shape(x, y, w, h, num) {
   this.x = x || 0;
   this.y = y || 0;
   this.w = w || 60;
   this.h = h || 60;
   this.num = num || 1;
-  this.fill = fill || '#AAAAAA';
 }
 
 
@@ -130,7 +127,12 @@ function CanvasState(canvas) {
   setInterval(function() { myState.draw(); }, myState.interval);
 }
 
-CanvasState.prototype.addShape = function(shape) {
+/////////
+////////
+////////
+////////
+CanvasState.prototype.addShape = function(x,y,n) {
+  shape = new Shape(x,y,120,120,n)
   this.shapes.push(shape);
   shape.draw(this.ctx);
   this.valid = false;
@@ -138,6 +140,14 @@ CanvasState.prototype.addShape = function(shape) {
 
 CanvasState.prototype.clear = function() {
   this.ctx.clearRect(0, 0, this.width, this.height);
+}
+
+CanvasState.prototype.addblock = function() {
+  // console.lthis.shapes
+}
+
+CanvasState.prototype.checkCollapse = function() {
+
 }
 
 
