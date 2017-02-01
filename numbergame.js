@@ -1,17 +1,18 @@
 function init(){
     var s = new CanvasState(document.getElementById('gameArea'));
-    s.addShape(20,520,s.numGen())
-    s.addShape(150,520,-1)
-    s.addShape(280,520,s.numGen())
+    s.addShape(20,520,s.numGen(), true)
+    s.addShape(150,520,-1,false)
+    s.addShape(280,520,s.numGen(),true)
 }
 
 
-function Shape(x, y, w, h, num) {
+function Shape(x, y, w, h, num, draggable) {
   this.x = x || 0;
   this.y = y || 0;
   this.w = w || 60;
   this.h = h || 60;
   this.num = num || 1;
+  this.draggable = draggable || false;
 }
 
 
@@ -81,7 +82,7 @@ function CanvasState(canvas) {
     console.log(shapes)
     var l = shapes.length;
     for (var i = l-1; i >= 0; i--) {
-      if (shapes[i].contains(mx, my)) {
+      if (shapes[i].contains(mx, my) && shapes[i].draggable) {
         var mySel = shapes[i];
 
 
@@ -132,8 +133,8 @@ function CanvasState(canvas) {
 ////////
 ////////
 ////////
-CanvasState.prototype.addShape = function(x,y,n) {
-  shape = new Shape(x,y,120,120,n)
+CanvasState.prototype.addShape = function(x,y,n,draggable) {
+  shape = new Shape(x,y,120,120,n,draggable)
   this.shapes.push(shape);
   shape.draw(this.ctx);
   this.valid = false;
