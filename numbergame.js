@@ -1,7 +1,7 @@
 function init(){
     var s = new CanvasState(document.getElementById('gameArea'));
     s.addShape(20,520,s.numGen(), true)
-    s.addShape(150,520,-1,false)
+    s.addShape(150,520,s.numGen(),false)
     s.addShape(280,520,s.numGen(),true)
 }
 
@@ -113,7 +113,7 @@ function CanvasState(canvas) {
   }, true);
   canvas.addEventListener('mouseup', function(e) {
     myState.dragging = false;
-    console.log("hererere");
+    console.log("hererere");/////// function call
   }, true);
 
   // canvas.addEventListener('dblclick', function(e) {
@@ -237,28 +237,53 @@ CanvasState.prototype.numGen = function() {
       max = this.shapes[i].num;
     }
   }
-  // if(max) {
-  //   case 1:
-  // }
-  var data = [[-1, 1],
-              [-2, 1],
-              [-3, 1],
-              [-4, 1],
-              [1, 1],
-              [2, 1],
-              [3, 1],
-              [4, 1],
-              [5, 1],
-              [6, 1],
-              [7, 1],
-              [8, 1],
-              [9, 1]];
+  if(max <= 4) {
+    var data = [[-1, 1],
+                [-2, 1],
+                [-3, 1],
+                [-4, 1],
+                [0, 2],
+                [1, 10],
+                [2, 100],
+                [3, 8],
+                [4, 5]]
+    var wl = new WeightedList(data);
+  } else if(max <= 7) {
+    var data = [[-1, 1],
+                [-2, 1],
+                [-3, 1],
+                [-4, 1],
+                [0, 1],
+                [1, 1],
+                [2, 1],
+                [3, 1],
+                [4, 1],
+                [5, 1],
+                [6, 1],
+                [7, 1],
+                [8, 1],
+                [9, 1]];
+    var wl = new WeightedList(data);
+  } else {
+    var data = [[-1, 1],
+                [-2, 1],
+                [-3, 1],
+                [-4, 1],
+                [0, 1],
+                [1, 1],
+                [2, 1],
+                [3, 1],
+                [4, 1],
+                [5, 1],
+                [6, 1],
+                [7, 1],
+                [8, 1],
+                [9, 1]];
+    var wl = new WeightedList(data);
+  }
 
-  var wl = new WeightedList(data);
-  console.log(wl)
 
 
 
-
-  return max;
+  return wl.peek();
 }
