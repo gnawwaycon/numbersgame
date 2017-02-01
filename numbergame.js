@@ -1,8 +1,8 @@
 function init(){
     var s = new CanvasState(document.getElementById('gameArea'));
-    s.addShape(20,520,1)
-    s.addShape(150,520,2)
-    s.addShape(280,520,3)
+    s.addShape(20,520,s.numGen())
+    s.addShape(150,520,-1)
+    s.addShape(280,520,s.numGen())
 }
 
 
@@ -55,8 +55,8 @@ function CanvasState(canvas) {
 
   this.valid = false;
   this.shapes = [];
+  this.bottom = [];
   this.dragging = false;
-
   this.selection = null;
   this.dragoffx = 0;
   this.dragoffy = 0;
@@ -227,4 +227,37 @@ CanvasState.prototype.getMouse = function(e) {
 
 
   return {x: mx, y: my};
+}
+
+CanvasState.prototype.numGen = function() {
+  var max = 1;
+  for (var i = 0; i < this.shapes.length; i++) {
+    if(this.shapes[i].num > max) {
+      max = this.shapes[i].num;
+    }
+  }
+  // if(max) {
+  //   case 1:
+  // }
+  var data = [[-1, 1],
+              [-2, 1],
+              [-3, 1],
+              [-4, 1],
+              [1, 1],
+              [2, 1],
+              [3, 1],
+              [4, 1],
+              [5, 1],
+              [6, 1],
+              [7, 1],
+              [8, 1],
+              [9, 1]];
+
+  var wl = new WeightedList(data);
+  console.log(wl)
+
+
+
+
+  return max;
 }
