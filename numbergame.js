@@ -1,8 +1,8 @@
 function init(){
     var s = new CanvasState(document.getElementById('gameArea'));
     s.addShape(20,520,1)
-    s.addShape(150,520,1)
-    s.addShape(280,520,1)
+    s.addShape(150,520,2)
+    s.addShape(280,520,3)
 }
 
 
@@ -17,9 +17,9 @@ function Shape(x, y, w, h, num) {
 
 Shape.prototype.draw = function(ctx) {
   img = new Image();
-  img.src = "./img/3.jpg";
-          ctx.drawImage(img, this.x, this.y);
-    }
+  img.src = "./img/" + this.num + ".jpg";
+  ctx.drawImage(img, this.x, this.y);
+}
 
 
 Shape.prototype.contains = function(mx, my) {
@@ -112,12 +112,13 @@ function CanvasState(canvas) {
   }, true);
   canvas.addEventListener('mouseup', function(e) {
     myState.dragging = false;
+    console.log("hererere");
   }, true);
 
-  canvas.addEventListener('dblclick', function(e) {
-    var mouse = myState.getMouse(e);
-    myState.addShape(new Shape(mouse.x - 60, mouse.y - 60, 120, 120, 'rgba(0,255,0,.6)'));
-  }, true);
+  // canvas.addEventListener('dblclick', function(e) {
+  //   var mouse = myState.getMouse(e);
+  //   myState.addShape(new Shape(mouse.x - 60, mouse.y - 60, 120, 120, 'rgba(0,255,0,.6)'));
+  // }, true);
 
 
 
@@ -143,7 +144,7 @@ CanvasState.prototype.clear = function() {
 }
 
 CanvasState.prototype.addblock = function() {
-  // console.lthis.shapes
+  console.log(this.shapes)
 }
 
 CanvasState.prototype.checkCollapse = function() {
@@ -192,7 +193,7 @@ CanvasState.prototype.draw = function() {
       img.onload = function(){
           ctx.drawImage(this, mySel.x,mySel.y);
       };
-      img.src = "./img/3.jpg"
+      img.src = "./img/" + mySel.num + ".jpg";
 
     }
 
