@@ -1,8 +1,8 @@
 function init(){
     var s = new CanvasState(document.getElementById('gameArea'));
-    s.addShape(20,520,s.numGen(), true)
+    s.addShape(20,520,s.numGen(), false)
     s.addShape(150,520,s.numGen(),false)
-    s.addShape(280,520,s.numGen(),true)
+    s.addShape(350,520,s.numGen(),true)
 }
 
 
@@ -56,7 +56,6 @@ function CanvasState(canvas) {
 
   this.valid = false;
   this.shapes = [];
-  this.bottom = [];
   this.dragging = false;
   this.selection = null;
   this.dragoffx = 0;
@@ -113,7 +112,8 @@ function CanvasState(canvas) {
   }, true);
   canvas.addEventListener('mouseup', function(e) {
     myState.dragging = false;
-    console.log("hererere");/////// function call
+    myState.addBlock();
+    myState.valid = false;
   }, true);
 
   // canvas.addEventListener('dblclick', function(e) {
@@ -121,10 +121,10 @@ function CanvasState(canvas) {
   //   myState.addShape(new Shape(mouse.x - 60, mouse.y - 60, 120, 120, 'rgba(0,255,0,.6)'));
   // }, true);
 
-
-
-  this.selectionColor = '#CC0000';
-  this.selectionWidth = 2;
+  //
+  //
+  // this.selectionColor = '#CC0000';
+  // this.selectionWidth = 2;
   this.interval = 30;
   setInterval(function() { myState.draw(); }, myState.interval);
 }
@@ -144,15 +144,23 @@ CanvasState.prototype.clear = function() {
   this.ctx.clearRect(0, 0, this.width, this.height);
 }
 
-CanvasState.prototype.addblock = function() {
-  console.log(this.shapes)
+CanvasState.prototype.addBlock = function() {
+  this.shapes.forEach(function(shape, index){
+    if (shape.x == 20 && shape.y == 520){
+      shape.x = 150;
+    } else if (shape.x == 150 && shape.y == 520) {
+      shape.x = 350;
+      shape.draggable = true;
+    } else {
+      shape.draggable = false;
+    }
+  })
+  this.addShape(20,520,this.numGen(), false)
 }
 
 CanvasState.prototype.checkCollapse = function() {
 
 }
-
-
 
 CanvasState.prototype.draw = function() {
 
@@ -238,11 +246,12 @@ CanvasState.prototype.numGen = function() {
     }
   }
   if(max <= 4) {
-    var data = [[-1, 1],
-                [-2, 1],
-                [-3, 1],
-                [-4, 1],
-                [0, 2],
+    var data = [
+      // [-1, 1],
+      //           [-2, 1],
+      //           [-3, 1],
+      //           [-4, 1],
+      //           [0, 2],
                 [1, 10],
                 [2, 100],
                 [3, 8],
