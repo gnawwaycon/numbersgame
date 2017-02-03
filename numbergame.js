@@ -264,13 +264,18 @@ CanvasState.prototype.checkCollapse = function() {
     }
   }
 
+  if(increment){
+    shapes[index].num++;
+  }
+
   list.sort(function(a,b){ return a - b; });
   for (var i = list.length-1; i >= 0; i--) {
     shapes.splice(list[i],1);
+    if(increment){
+      this.checkCollapse();
+    }
   }
   this.draw();
-
- console.log(list,increment);
 }
 
 CanvasState.prototype.draw = function() {
