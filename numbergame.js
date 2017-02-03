@@ -118,7 +118,8 @@ function CanvasState(canvas) {
     var mouse = myState.getMouse(e);
     myState.mx = mouse.x;
     myState.my = mouse.y;
-    myState.checkCollapse()
+    myState.checkCollapse();
+    myState.draw();
     myState.valid = false;
   }, true);
 
