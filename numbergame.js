@@ -80,7 +80,7 @@ function CanvasState(canvas) {
     var mx = mouse.x;
     var my = mouse.y;
     var shapes = myState.shapes;
-    console.log(shapes)
+    // console.log(shapes)
     var l = shapes.length;
     for (var i = l-1; i >= 0; i--) {
       if (shapes[i].contains(mx, my) && shapes[i].draggable) {
@@ -168,20 +168,109 @@ CanvasState.prototype.checkCollapse = function() {
   var mx = this.mx;
   var my = this.my;
   var shapes = this.shapes;
+  var index = 0;
   var l = shapes.length;
-  for (var i = l-1; i >= 0; i--) {
-    if (shapes[i].y !== 520) {
-      // console.log(shapes[i],mx,my);
+  var increment = false;
+  var list = [];
+  console.log(shapes)
 
-      if(shapes[i].contains(mx-120, my) || shapes[i].contains(mx+120, my) ||
-         shapes[i].contains(mx, my+120) || shapes[i].contains(mx, my-120) ||
-         shapes[i].contains(mx-120, my-120) || shapes[i].contains(mx-120, my+120) ||
-         shapes[i].contains(mx-120, my-120) || shapes[i].contains(mx+120, my-120)){
-          //  if(shapes[i].num)
-          console.log("sadfsdf");
-         }
+  for (var i = l-1; i >= 0; i--) {
+    if(shapes[i].contains(mx, my)) {
+      index = i;
+      switch(shapes[index].num) {
+        case -4:
+            collapseDown();
+            break;
+        case -3:
+            collapseRight();
+            break;
+        case -2:
+            collapseUp();
+            break;
+        case -1:
+            collapseLeft();
+            break;
+        case 0:
+            break;
+        default:
+            collapseNum();
+      }
     }
   }
+
+  function collapseDown() {
+    for (var i = l-1; i >= 0; i--) {
+      if (shapes[i].y !== 520) {
+        if(shapes[i].contains(mx, my) ||
+           shapes[i].contains(mx, my+120) ||
+           shapes[i].contains(mx, my+240) ||
+           shapes[i].contains(mx, my+360)) {
+             list.push(i);
+           }
+      }
+    }
+  }
+  function collapseRight() {
+    for (var i = l-1; i >= 0; i--) {
+      if (shapes[i].y !== 520) {
+        if(shapes[i].contains(mx, my) ||
+           shapes[i].contains(mx+120, my) ||
+           shapes[i].contains(mx+240, my) ||
+           shapes[i].contains(mx+360, my)) {
+             list.push(i);
+           }
+      }
+    }
+  }
+  function collapseUp() {
+    for (var i = l-1; i >= 0; i--) {
+      if (shapes[i].y !== 520) {
+        if(shapes[i].contains(mx, my) ||
+           shapes[i].contains(mx, my-120) ||
+           shapes[i].contains(mx, my-240) ||
+           shapes[i].contains(mx, my-360)) {
+             list.push(i);
+           }
+      }
+    }
+  }
+  function collapseLeft() {
+    for (var i = l-1; i >= 0; i--) {
+      if (shapes[i].y !== 520) {
+        if(shapes[i].contains(mx, my) ||
+           shapes[i].contains(mx-120, my) ||
+           shapes[i].contains(mx-240, my) ||
+           shapes[i].contains(mx-360, my)) {
+             list.push(i);
+           }
+      }
+    }
+  }
+
+  function collapseNum() {
+    for (var i = l-1; i >= 0; i--) {
+      if (shapes[i].y !== 520) {
+        if(shapes[i].contains(mx-120, my) || shapes[i].contains(mx+120, my) ||
+           shapes[i].contains(mx, my+120) || shapes[i].contains(mx, my-120) ||
+           shapes[i].contains(mx-120, my+120) || shapes[i].contains(mx+120, my+120) ||
+           shapes[i].contains(mx-120, my-120) || shapes[i].contains(mx+120, my-120)) {
+             console.log(shapes[i].num, shapes[index].num)
+             if(shapes[i].num == shapes[index].num){
+               increment = true;
+               list.push(i);
+             }
+           }
+      }
+    }
+  }
+
+  list.sort(function(a,b){ return a - b; });
+  for (var i = list.length-1; i >= 0; i--) {
+    shapes.splice(list[i],1);
+  }
+  this.draw();
+
+ console.log(list,increment);
 }
 
 CanvasState.prototype.draw = function() {
@@ -213,23 +302,6 @@ CanvasState.prototype.draw = function() {
           shape.x + shape.w < 0 || shape.y + shape.h < 0) continue;
       shapes[i].draw(ctx);
     }
-
-
-
-    if (this.selection != null) {
-      ctx.strokeStyle = this.selectionColor;
-      ctx.lineWidth = this.selectionWidth;
-      var mySel = this.selection;
-      var img = new Image();
-      img.onload = function(){
-          ctx.drawImage(this, mySel.x,mySel.y);
-      };
-      img.src = "./img/" + mySel.num + ".jpg";
-
-    }
-
-
-
     this.valid = true;
   }
 }
@@ -315,5 +387,5 @@ CanvasState.prototype.numGen = function() {
 
 
 
-  return wl.peek();
+  return Number(wl.peek()[0]);
 }
