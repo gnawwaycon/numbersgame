@@ -171,11 +171,14 @@ CanvasState.prototype.checkCollapse = function() {
   var l = shapes.length;
   for (var i = l-1; i >= 0; i--) {
     if (shapes[i].y !== 520) {
-      console.log(shapes[i],mx,my);
+      // console.log(shapes[i],mx,my);
 
       if(shapes[i].contains(mx-120, my) || shapes[i].contains(mx+120, my) ||
-         shapes[i].contains(mx, my+120) || shapes[i].contains(mx, my-120)){
-           console.log(shapes[i]);
+         shapes[i].contains(mx, my+120) || shapes[i].contains(mx, my-120) ||
+         shapes[i].contains(mx-120, my-120) || shapes[i].contains(mx-120, my+120) ||
+         shapes[i].contains(mx-120, my-120) || shapes[i].contains(mx+120, my-120)){
+          //  if(shapes[i].num)
+          console.log("sadfsdf");
          }
     }
   }
