@@ -60,6 +60,8 @@ function CanvasState(canvas) {
   this.selection = null;
   this.dragoffx = 0;
   this.dragoffy = 0;
+  this.mx = 0;
+  this.my = 0;
 
 
 
@@ -87,6 +89,8 @@ function CanvasState(canvas) {
 
         myState.dragoffx = mx - mySel.x;
         myState.dragoffy = my - mySel.y;
+        myState.mx = mx;
+        myState.my = my;
         myState.dragging = true;
         myState.selection = mySel;
         myState.valid = false;
@@ -103,8 +107,6 @@ function CanvasState(canvas) {
   canvas.addEventListener('mousemove', function(e) {
     if (myState.dragging){
       var mouse = myState.getMouse(e);
-
-
       myState.selection.x = mouse.x - myState.dragoffx;
       myState.selection.y = mouse.y - myState.dragoffy;
       myState.valid = false;
@@ -113,6 +115,10 @@ function CanvasState(canvas) {
   canvas.addEventListener('mouseup', function(e) {
     myState.dragging = false;
     myState.addBlock();
+    var mouse = myState.getMouse(e);
+    myState.mx = mouse.x;
+    myState.my = mouse.y;
+    myState.checkCollapse()
     myState.valid = false;
   }, true);
 
@@ -159,7 +165,20 @@ CanvasState.prototype.addBlock = function() {
 }
 
 CanvasState.prototype.checkCollapse = function() {
+  var mx = this.mx;
+  var my = this.my;
+  var shapes = this.shapes;
+  var l = shapes.length;
+  for (var i = l-1; i >= 0; i--) {
+    if (shapes[i].y !== 520) {
+      console.log(shapes[i],mx,my);
 
+      if(shapes[i].contains(mx-120, my) || shapes[i].contains(mx+120, my) ||
+         shapes[i].contains(mx, my+120) || shapes[i].contains(mx, my-120)){
+           console.log(shapes[i]);
+         }
+    }
+  }
 }
 
 CanvasState.prototype.draw = function() {
@@ -183,7 +202,7 @@ CanvasState.prototype.draw = function() {
     }
 
     var l = shapes.length;
-    console.log(l)
+    // console.log(l)
     for (var i = 0; i < l; i++) {
       var shape = shapes[i];
 
@@ -246,16 +265,15 @@ CanvasState.prototype.numGen = function() {
     }
   }
   if(max <= 4) {
-    var data = [
-      // [-1, 1],
-      //           [-2, 1],
-      //           [-3, 1],
-      //           [-4, 1],
-      //           [0, 2],
-                [1, 10],
-                [2, 100],
-                [3, 8],
-                [4, 5]]
+    var data = [[-1, 1],
+                [-2, 1],
+                [-3, 1],
+                [-4, 1],
+                [0, 4],
+                [1, 20],
+                [2, 20],
+                [3, 10],
+                [4, 3]]
     var wl = new WeightedList(data);
   } else if(max <= 7) {
     var data = [[-1, 1],
