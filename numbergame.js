@@ -24,8 +24,6 @@ Shape.prototype.draw = function(ctx) {
 
 
 Shape.prototype.contains = function(mx, my) {
-
-
   return  (this.x <= mx) && (this.x + this.w >= mx) &&
           (this.y <= my) && (this.y + this.h >= my);
 }
@@ -114,24 +112,19 @@ function CanvasState(canvas) {
   }, true);
   canvas.addEventListener('mouseup', function(e) {
     myState.dragging = false;
-    myState.addBlock();
     var mouse = myState.getMouse(e);
-    myState.mx = mouse.x;
-    myState.my = mouse.y;
-    myState.checkCollapse();
-    myState.draw();
-    myState.valid = false;
+    if(myState.didMove(mouse.x, mouse.y)){
+      if(myState.validMove()){
+        myState.addBlock();
+        myState.mx = mouse.x;
+        myState.my = mouse.y;
+        myState.checkCollapse();
+        myState.draw();
+        myState.valid = false;
+      }
+    }
   }, true);
 
-  // canvas.addEventListener('dblclick', function(e) {
-  //   var mouse = myState.getMouse(e);
-  //   myState.addShape(new Shape(mouse.x - 60, mouse.y - 60, 120, 120, 'rgba(0,255,0,.6)'));
-  // }, true);
-
-  //
-  //
-  // this.selectionColor = '#CC0000';
-  // this.selectionWidth = 2;
   this.interval = 30;
   setInterval(function() { myState.draw(); }, myState.interval);
 }
@@ -140,6 +133,20 @@ function CanvasState(canvas) {
 ////////
 ////////
 ////////
+CanvasState.prototype.didMove = function(x,y) {
+  if(this.mx == x && this.my == y){
+    return false;
+  }
+  return true;
+}
+
+CanvasState.prototype.validMove = function(x,y) {
+  if(this.mx == x && this.my == y){
+    return true;
+  }
+  return true;
+}
+
 CanvasState.prototype.addShape = function(x,y,n,draggable) {
   shape = new Shape(x,y,120,120,n,draggable)
   this.shapes.push(shape);
