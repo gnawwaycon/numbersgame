@@ -51,21 +51,14 @@ function CanvasState(canvas) {
   this.htmlLeft = html.offsetLeft;
 
 
-
   this.valid = false;
   this.shapes = [];
   this.dragging = false;
-  this.selection = null;
+  this.selection = null;  //number being moved
   this.dragoffx = 0;
   this.dragoffy = 0;
   this.mx = 0;
   this.my = 0;
-
-
-
-
-
-
 
 
   var myState = this;
@@ -111,10 +104,9 @@ function CanvasState(canvas) {
     }
   }, true);
   canvas.addEventListener('mouseup', function(e) {
-    myState.dragging = false;
     var mouse = myState.getMouse(e);
     if(myState.didMove(mouse.x, mouse.y)){
-      if(myState.validMove()){
+      if(myState.validateMove(mouse.x,mouse.y) && myState.dragging){ //if dragging is false then the user was not dragging a cube
         myState.addBlock();
         myState.mx = mouse.x;
         myState.my = mouse.y;
@@ -123,6 +115,7 @@ function CanvasState(canvas) {
         myState.valid = false;
       }
     }
+    myState.dragging = false;
   }, true);
 
   this.interval = 30;
@@ -140,10 +133,20 @@ CanvasState.prototype.didMove = function(x,y) {
   return true;
 }
 
-CanvasState.prototype.validMove = function(x,y) {
-  if(this.mx == x && this.my == y){
-    return true;
-  }
+CanvasState.prototype.validateMove = function(x,y) {
+  this.selection.x = Math.round((x - this.dragoffx)/125) * 125 + 2;
+  this.selection.y = Math.round((y - this.dragoffy)/125) * 125 + 2;
+  // this.mx = Math.round((x - this.dragoffx)/125) * 125 + 2;
+  // this.my = Math.round((y - this.dragoffy)/125) * 125 + 2;
+  // console.log(this.mx)
+  // for(var i = 2; i < this.shapes.length; i++){
+    // if(this.shapes[i] !==){
+
+    // }
+  // }
+  // if(this.mx == x && this.my == y){
+  //   return true;
+  // }
   return true;
 }
 
@@ -158,7 +161,7 @@ CanvasState.prototype.clear = function() {
   this.ctx.clearRect(0, 0, this.width, this.height);
 }
 
-CanvasState.prototype.addBlock = function() {
+CanvasState.prototype.addBlock = function() { //shift blocks over one or create one
   this.shapes.forEach(function(shape, index){
     if (shape.x == 20 && shape.y == 520){
       shape.x = 150;
@@ -180,8 +183,6 @@ CanvasState.prototype.checkCollapse = function() {
   var l = shapes.length;
   var increment = false;
   var list = [];
-  console.log(shapes)
-
   for (var i = l-1; i >= 0; i--) {
     if(shapes[i].contains(mx, my)) {
       index = i;
@@ -262,7 +263,7 @@ CanvasState.prototype.checkCollapse = function() {
            shapes[i].contains(mx, my+120) || shapes[i].contains(mx, my-120) ||
            shapes[i].contains(mx-120, my+120) || shapes[i].contains(mx+120, my+120) ||
            shapes[i].contains(mx-120, my-120) || shapes[i].contains(mx+120, my-120)) {
-             console.log(shapes[i].num, shapes[index].num)
+            //  console.log(shapes[i].num, shapes[index].num)
              if(shapes[i].num == shapes[index].num){
                increment = true;
                list.push(i);
@@ -324,23 +325,17 @@ CanvasState.prototype.draw = function() {
 
 CanvasState.prototype.getMouse = function(e) {
   var element = this.canvas, offsetX = 0, offsetY = 0, mx, my;
-
-
   if (element.offsetParent !== undefined) {
     do {
       offsetX += element.offsetLeft;
       offsetY += element.offsetTop;
     } while ((element = element.offsetParent));
   }
-
-
-
   offsetX += this.stylePaddingLeft + this.styleBorderLeft + this.htmlLeft;
   offsetY += this.stylePaddingTop + this.styleBorderTop + this.htmlTop;
 
   mx = e.pageX - offsetX;
   my = e.pageY - offsetY;
-
 
   return {x: mx, y: my};
 }
