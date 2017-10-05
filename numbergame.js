@@ -134,8 +134,8 @@ CanvasState.prototype.didMove = function(x,y) {
 }
 
 CanvasState.prototype.validateMove = function(x,y) {
-  this.selection.x = Math.round((x - this.dragoffx)/125) * 125 + 2;
-  this.selection.y = Math.round((y - this.dragoffy)/125) * 125 + 2;
+  this.selection.x = Math.round((x - this.dragoffx)/125) * 125 + 3;
+  this.selection.y = Math.round((y - this.dragoffy)/125) * 125 + 4;
   // this.mx = Math.round((x - this.dragoffx)/125) * 125 + 2;
   // this.my = Math.round((y - this.dragoffy)/125) * 125 + 2;
   // console.log(this.mx)
@@ -295,17 +295,17 @@ CanvasState.prototype.draw = function() {
     this.clear();
 
 
-    for (var i = 0; i < 4; i++) {
-      ctx.strokeStyle="#000000";
-      ctx.beginPath();
-      ctx.moveTo(125 + i * 125, 0);
-      ctx.lineTo(125 + i * 125, 500);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(0, 125 + i * 125);
-      ctx.lineTo(500, 125 + i * 125);
-      ctx.stroke();
-    }
+    // for (var i = 0; i < 4; i++) {
+    //   ctx.strokeStyle="#000000";
+    //   ctx.beginPath();
+    //   ctx.moveTo(125 + i * 125, 0);
+    //   ctx.lineTo(125 + i * 125, 500);
+    //   ctx.stroke();
+    //   ctx.beginPath();
+    //   ctx.moveTo(0, 125 + i * 125);
+    //   ctx.lineTo(500, 125 + i * 125);
+    //   ctx.stroke();
+    // }
 
     var l = shapes.length;
     // console.log(l)
