@@ -17,9 +17,17 @@ function Shape(x, y, w, h, num, draggable) {
 
 
 Shape.prototype.draw = function(ctx) {
-  img = new Image();
-  img.src = "./img/" + this.num + ".jpg";
-  ctx.drawImage(img, this.x, this.y);
+  // img = new Image();
+  // sprite = "./img/sprite.png"
+  // ctx.drawImage(sprites,srcX,srcY,srcW,srcH,destX,destY,destW,destH);
+
+  // // ctx.drawImage(sprite,0,0)
+  // img.src = "./img/" + this.num + ".jpg";
+  // ctx.drawImage(img, this.x, this.y);
+  sprite = new Image();
+  sprite.src = "./img/sprite.png"
+  x = (this.num + 4)*120
+  ctx.drawImage(sprite,x,0,120,120,this.x,this.y,120,120);
 }
 
 
