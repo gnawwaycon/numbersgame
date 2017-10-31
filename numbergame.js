@@ -130,10 +130,6 @@ function CanvasState(canvas) {
   setInterval(function() { myState.draw(); }, myState.interval);
 }
 
-/////////
-////////
-////////
-////////
 CanvasState.prototype.didMove = function(x,y) {
   if(this.mx == x && this.my == y){
     return false;
@@ -187,6 +183,8 @@ CanvasState.prototype.checkCollapse = function() {
   var mx = this.mx;
   var my = this.my;
   var shapes = this.shapes;
+
+
   var index = 0;
   var l = shapes.length;
   var increment = false;
@@ -216,6 +214,8 @@ CanvasState.prototype.checkCollapse = function() {
   }
 
   function collapseDown() {
+    console.log(shapes);
+    console.log(shapes[l-4],mx,my,shapes[l-1].contains(mx, my+120))
     for (var i = l-1; i >= 0; i--) {
       if (shapes[i].y !== 520) {
         if(shapes[i].contains(mx, my) ||
@@ -228,6 +228,8 @@ CanvasState.prototype.checkCollapse = function() {
     }
   }
   function collapseRight() {
+    console.log(shapes);
+    console.log(shapes[l-4],mx,my,shapes[l-1].contains(mx, my+120))
     for (var i = l-1; i >= 0; i--) {
       if (shapes[i].y !== 520) {
         if(shapes[i].contains(mx, my) ||
@@ -240,6 +242,9 @@ CanvasState.prototype.checkCollapse = function() {
     }
   }
   function collapseUp() {
+    console.log(shapes);
+    console.log(shapes[l-4],mx,my,shapes[l-2].contains(mx, my+120))
+
     for (var i = l-1; i >= 0; i--) {
       if (shapes[i].y !== 520) {
         if(shapes[i].contains(mx, my) ||
@@ -252,6 +257,9 @@ CanvasState.prototype.checkCollapse = function() {
     }
   }
   function collapseLeft() {
+    console.log(shapes);
+    console.log(shapes[l-4],mx,my,shapes[l-1].contains(mx, my+120))
+
     for (var i = l-1; i >= 0; i--) {
       if (shapes[i].y !== 520) {
         if(shapes[i].contains(mx, my) ||
@@ -356,10 +364,10 @@ CanvasState.prototype.numGen = function() {
     }
   }
   if(max <= 4) {
-    var data = [[-1, 1],
-                [-2, 1],
-                [-3, 1],
-                [-4, 1],
+    var data = [[-1, 20],
+                [-2, 20],
+                [-3, 20],
+                [-4, 20],
                 [0, 5],
                 [1, 20],
                 [2, 20],
