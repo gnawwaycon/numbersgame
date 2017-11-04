@@ -32,6 +32,7 @@ Shape.prototype.draw = function(ctx) {
 
 
 Shape.prototype.contains = function(mx, my) {
+  console.log(this.x ,this. y, "KACHOW")
   return  (this.x <= mx) && (this.x + this.w >= mx) &&
           (this.y <= my) && (this.y + this.h >= my);
 }
@@ -194,16 +195,16 @@ CanvasState.prototype.checkCollapse = function() {
       index = i;
       switch(shapes[index].num) {
         case -4:
-            collapseDown();
+            collapseLeft();
             break;
         case -3:
-            collapseRight();
-            break;
-        case -2:
             collapseUp();
             break;
+        case -2:
+            collapseRight();
+            break;
         case -1:
-            collapseLeft();
+            collapseDown();
             break;
         case 0:
             break;
