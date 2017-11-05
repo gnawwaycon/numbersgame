@@ -32,7 +32,6 @@ Shape.prototype.draw = function(ctx) {
 
 
 Shape.prototype.contains = function(mx, my) {
-  console.log(this.x ,this. y, "KACHOW")
   return  (this.x <= mx) && (this.x + this.w >= mx) &&
           (this.y <= my) && (this.y + this.h >= my);
 }
@@ -80,7 +79,6 @@ function CanvasState(canvas) {
     var mx = mouse.x;
     var my = mouse.y;
     var shapes = myState.shapes;
-    // console.log(shapes)
     var l = shapes.length;
     for (var i = l-1; i >= 0; i--) {
       if (shapes[i].contains(mx, my) && shapes[i].draggable) {
@@ -143,7 +141,6 @@ CanvasState.prototype.validateMove = function(x,y) {
   this.selection.y = Math.round((y - this.dragoffy)/125) * 125 + 4;
   // this.mx = Math.round((x - this.dragoffx)/125) * 125 + 2;
   // this.my = Math.round((y - this.dragoffy)/125) * 125 + 2;
-  // console.log(this.mx)
   // for(var i = 2; i < this.shapes.length; i++){
     // if(this.shapes[i] !==){
 
@@ -215,8 +212,6 @@ CanvasState.prototype.checkCollapse = function() {
   }
 
   function collapseDown() {
-    console.log(shapes);
-    console.log(shapes[l-4],mx,my,shapes[l-1].contains(mx, my+120))
     for (var i = l-1; i >= 0; i--) {
       if (shapes[i].y !== 520) {
         if(shapes[i].contains(mx, my) ||
@@ -229,8 +224,6 @@ CanvasState.prototype.checkCollapse = function() {
     }
   }
   function collapseRight() {
-    console.log(shapes);
-    console.log(shapes[l-4],mx,my,shapes[l-1].contains(mx, my+120))
     for (var i = l-1; i >= 0; i--) {
       if (shapes[i].y !== 520) {
         if(shapes[i].contains(mx, my) ||
@@ -243,8 +236,6 @@ CanvasState.prototype.checkCollapse = function() {
     }
   }
   function collapseUp() {
-    console.log(shapes);
-    console.log(shapes[l-4],mx,my,shapes[l-2].contains(mx, my+120))
 
     for (var i = l-1; i >= 0; i--) {
       if (shapes[i].y !== 520) {
@@ -258,8 +249,6 @@ CanvasState.prototype.checkCollapse = function() {
     }
   }
   function collapseLeft() {
-    console.log(shapes);
-    console.log(shapes[l-4],mx,my,shapes[l-1].contains(mx, my+120))
 
     for (var i = l-1; i >= 0; i--) {
       if (shapes[i].y !== 520) {
@@ -280,7 +269,6 @@ CanvasState.prototype.checkCollapse = function() {
            shapes[i].contains(mx, my+120) || shapes[i].contains(mx, my-120) ||
            shapes[i].contains(mx-120, my+120) || shapes[i].contains(mx+120, my+120) ||
            shapes[i].contains(mx-120, my-120) || shapes[i].contains(mx+120, my-120)) {
-            //  console.log(shapes[i].num, shapes[index].num)
              if(shapes[i].num == shapes[index].num){
                increment = true;
                list.push(i);
@@ -325,7 +313,6 @@ CanvasState.prototype.draw = function() {
     // }
 
     var l = shapes.length;
-    // console.log(l)
     for (var i = 0; i < l; i++) {
       var shape = shapes[i];
 
