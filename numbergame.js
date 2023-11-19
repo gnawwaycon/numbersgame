@@ -125,6 +125,75 @@ function CanvasState(canvas) {
     myState.dragging = false;
   }, true);
 
+
+  //copy pasta from bard on how to implement touch screen functionality
+  function handleTouchStart(e) {
+  // Extract touch coordinates
+  var touch = e.touches[0];
+  var mx = touch.pageX;
+  var my = touch.pageY;
+
+  // Check for interactions with shapes
+  var shapes = myState.shapes;
+  var l = shapes.length;
+  for (var i = l - 1; i >= 0; i--) {
+    if (shapes[i].contains(mx, my) && shapes[i].draggable) {
+      // Handle dragging
+      myState.dragoffx = mx - shapes[i].x;
+      myState.dragoffy = my - shapes[i].y;
+      myState.mx = mx;
+      myState.my = my;
+      myState.dragging = true;
+      myState.selection = shapes[i];
+      myState.valid = false;
+      return;
+    }
+  }
+
+  if (myState.selection) {
+    myState.selection = null;
+    myState.valid = false;
+  }
+}
+
+function handleTouchMove(e) {
+  if (myState.dragging) {
+    // Update shape position based on touch coordinates
+    var touch = e.touches[0];
+    var mx = touch.pageX;
+    var my = touch.pageY;
+    myState.selection.x = mx - myState.dragoffx;
+    myState.selection.y = my - myState.dragoffy;
+    myState.valid = false;
+  }
+}
+
+function handleTouchEnd(e) {
+  // Update game state based on touch end
+  var touch = e.changedTouches[0];
+  var mx = touch.pageX;
+  var my = touch.pageY;
+
+  if (myState.didMove(mx, my)) {
+    // Check for valid move and add block
+    if (myState.validateMove(mx, my) && myState.dragging) {
+      myState.addBlock();
+      myState.mx = mx;
+      myState.my = my;
+      myState.checkCollapse();
+      myState.draw();
+      myState.valid = false;
+    }
+  }
+  myState.dragging = false;
+}
+
+  canvas.addEventListener('touchstart', function(e) { handleTouchStart(e); }, false);
+
+canvas.addEventListener('touchmove', function(e) { handleTouchMove(e); }, true);
+
+canvas.addEventListener('touchend', function(e) { handleTouchEnd(e); }, true);
+
   this.interval = 30;
   setInterval(function() { myState.draw(); }, myState.interval);
 }
