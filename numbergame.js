@@ -1,10 +1,15 @@
 function init(){
     var s = new CanvasState(document.getElementById('gameArea'));
-    s.addShape(20,520,s.numGen(), false)
-    s.addShape(150,520,s.numGen(),false)
-    s.addShape(350,520,s.numGen(),true)
+    s.addShape(20,PREVIEW_Y,s.numGen(), false)
+    s.addShape(150,PREVIEW_Y,s.numGen(),false)
+    s.addShape(350,PREVIEW_Y,s.numGen(),true)
 }
 
+sprite = new Image();
+sprite.src = "./img/sprite.png"
+const BLOCK_SIZE = 120;
+const PREVIEW_X = 20;
+const PREVIEW_Y = 520;
 
 function Shape(x, y, w, h, num, draggable) {
   this.x = x || 0;
@@ -24,10 +29,8 @@ Shape.prototype.draw = function(ctx) {
   // // ctx.drawImage(sprite,0,0)
   // img.src = "./img/" + this.num + ".jpg";
   // ctx.drawImage(img, this.x, this.y);
-  sprite = new Image();
-  sprite.src = "./img/sprite.png"
-  x = (this.num + 4)*120
-  ctx.drawImage(sprite,x,0,120,120,this.x,this.y,120,120);
+  x = (this.num + 4)*BLOCK_SIZE
+  ctx.drawImage(sprite,x,0,BLOCK_SIZE,BLOCK_SIZE,this.x,this.y,BLOCK_SIZE,BLOCK_SIZE);
 }
 
 
@@ -43,6 +46,7 @@ function CanvasState(canvas) {
   this.width = canvas.width;
   this.height = canvas.height;
   this.ctx = canvas.getContext('2d');
+  this.score = 0;
 
 
   var stylePaddingLeft, stylePaddingTop, styleBorderLeft, styleBorderTop;
@@ -221,8 +225,14 @@ CanvasState.prototype.validateMove = function(x,y) {
   return true;
 }
 
+CanvasState.prototype.displayScore = function() {
+  const scoreContainer = document.querySelector('.score-container');
+  scoreContainer.textContent = `Score: ${this.score}`;
+}
+
+
 CanvasState.prototype.addShape = function(x,y,n,draggable) {
-  shape = new Shape(x,y,120,120,n,draggable)
+  shape = new Shape(x,y,BLOCK_SIZE,BLOCK_SIZE,n,draggable)
   this.shapes.push(shape);
   shape.draw(this.ctx);
   this.valid = false;
@@ -234,16 +244,16 @@ CanvasState.prototype.clear = function() {
 
 CanvasState.prototype.addBlock = function() { //shift blocks over one or create one
   this.shapes.forEach(function(shape, index){
-    if (shape.x == 20 && shape.y == 520){
+    if (shape.x == PREVIEW_X && shape.y == PREVIEW_Y){
       shape.x = 150;
-    } else if (shape.x == 150 && shape.y == 520) {
+    } else if (shape.x == 150 && shape.y == PREVIEW_Y) {
       shape.x = 350;
       shape.draggable = true;
     } else {
       shape.draggable = false;
     }
   })
-  this.addShape(20,520,this.numGen(), false)
+  this.addShape(PREVIEW_X,PREVIEW_Y,this.numGen(), false)
 }
 
 CanvasState.prototype.checkCollapse = function() {
@@ -282,9 +292,9 @@ CanvasState.prototype.checkCollapse = function() {
 
   function collapseDown() {
     for (var i = l-1; i >= 0; i--) {
-      if (shapes[i].y !== 520) {
+      if (shapes[i].y !== PREVIEW_Y) {
         if(shapes[i].contains(mx, my) ||
-           shapes[i].contains(mx, my+120) ||
+           shapes[i].contains(mx, my+BLOCK_SIZE) ||
            shapes[i].contains(mx, my+240) ||
            shapes[i].contains(mx, my+360)) {
              list.push(i);
@@ -294,9 +304,9 @@ CanvasState.prototype.checkCollapse = function() {
   }
   function collapseRight() {
     for (var i = l-1; i >= 0; i--) {
-      if (shapes[i].y !== 520) {
+      if (shapes[i].y !== PREVIEW_Y) {
         if(shapes[i].contains(mx, my) ||
-           shapes[i].contains(mx+120, my) ||
+           shapes[i].contains(mx+BLOCK_SIZE, my) ||
            shapes[i].contains(mx+240, my) ||
            shapes[i].contains(mx+360, my)) {
              list.push(i);
@@ -307,9 +317,9 @@ CanvasState.prototype.checkCollapse = function() {
   function collapseUp() {
 
     for (var i = l-1; i >= 0; i--) {
-      if (shapes[i].y !== 520) {
+      if (shapes[i].y !== PREVIEW_Y) {
         if(shapes[i].contains(mx, my) ||
-           shapes[i].contains(mx, my-120) ||
+           shapes[i].contains(mx, my-BLOCK_SIZE) ||
            shapes[i].contains(mx, my-240) ||
            shapes[i].contains(mx, my-360)) {
              list.push(i);
@@ -320,9 +330,9 @@ CanvasState.prototype.checkCollapse = function() {
   function collapseLeft() {
 
     for (var i = l-1; i >= 0; i--) {
-      if (shapes[i].y !== 520) {
+      if (shapes[i].y !== PREVIEW_Y) {
         if(shapes[i].contains(mx, my) ||
-           shapes[i].contains(mx-120, my) ||
+           shapes[i].contains(mx-BLOCK_SIZE, my) ||
            shapes[i].contains(mx-240, my) ||
            shapes[i].contains(mx-360, my)) {
              list.push(i);
@@ -333,11 +343,11 @@ CanvasState.prototype.checkCollapse = function() {
 
   function collapseNum() {
     for (var i = l-1; i >= 0; i--) {
-      if (shapes[i].y !== 520) {
-        if(shapes[i].contains(mx-120, my) || shapes[i].contains(mx+120, my) ||
-           shapes[i].contains(mx, my+120) || shapes[i].contains(mx, my-120) ||
-           shapes[i].contains(mx-120, my+120) || shapes[i].contains(mx+120, my+120) ||
-           shapes[i].contains(mx-120, my-120) || shapes[i].contains(mx+120, my-120)) {
+      if (shapes[i].y !== PREVIEW_Y) {
+        if(shapes[i].contains(mx-BLOCK_SIZE, my) || shapes[i].contains(mx+BLOCK_SIZE, my) ||
+           shapes[i].contains(mx, my+BLOCK_SIZE) || shapes[i].contains(mx, my-BLOCK_SIZE) ||
+           shapes[i].contains(mx-BLOCK_SIZE, my+BLOCK_SIZE) || shapes[i].contains(mx+BLOCK_SIZE, my+BLOCK_SIZE) ||
+           shapes[i].contains(mx-BLOCK_SIZE, my-BLOCK_SIZE) || shapes[i].contains(mx+BLOCK_SIZE, my-BLOCK_SIZE)) {
              if(shapes[i].num == shapes[index].num){
                increment = true;
                list.push(i);
@@ -350,6 +360,9 @@ CanvasState.prototype.checkCollapse = function() {
   if(increment){
     shapes[index].num++;
   }
+
+  var scoreIncrease = list.length * 10; // Award 10 points per collapsed block
+  this.score += scoreIncrease;
 
   list.sort(function(a,b){ return a - b; });
   for (var i = list.length-1; i >= 0; i--) {
@@ -367,6 +380,9 @@ CanvasState.prototype.draw = function() {
     var ctx = this.ctx;
     var shapes = this.shapes;
     this.clear();
+    
+
+    this.displayScore();
 
 
     // for (var i = 0; i < 4; i++) {

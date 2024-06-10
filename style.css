@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0; /* Light grey background */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    min-height: 100vh; /* Make sure body covers the entire viewport height */
+  }
+  
+  header {
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    color: #333; /* Dark grey title */
+  }
+  
+  canvas {
+    border: 2px solid #555; /* Thicker, darker border */
+    background-image: url('img/back.png'); /* Use your background image */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  }
+  
+  .score-container {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+  

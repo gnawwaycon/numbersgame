@@ -1,13 +1,3 @@
-/**
- * js-weighted-list.js
- * 
- * version 0.2
- * 
- * This file is licensed under the MIT License, please see MIT-LICENSE.txt for details.
- * 
- * https://github.com/timgilbert/js-weighted-list is its home.
- */
-
 var WeightedList = (function() {
 
   function _WeightedList(initial) { 
